@@ -115,7 +115,7 @@ Deze gids zal de chronologie van een [youtube Go tutorial](https://www.youtube.c
 - Onderliggend een array
     - Wanneer slice wordt uitgebreid -> kopie naar nieuwe array
 - ```go
-    foo := []string{}
+    foo := []string{} // Literal syntax
     bar := make([]string, length, capacity) // Verder meer
     ```
     - In make syntax lengte nodig, capaciteit optioneel (default naar lengte)
@@ -148,3 +148,6 @@ Wel referentie naar array of slice
 
 ## Maps en structs
 [Hoofdstuk maps en structs](https://www.youtube.com/watch?v=YS4e4q9oBaU&t=8240s)
+
+- Te vergelijken dictionary in andere talen
+- Key-value pairs
