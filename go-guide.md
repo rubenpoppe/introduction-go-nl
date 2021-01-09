@@ -319,3 +319,34 @@ Omdat break volledige executie van loops stopt kan je niet breaken in een inner 
             }
     }
     ```
+
+## Control flow
+[Hoofdstuk defer, panic and recover](https://www.youtube.com/watch?v=YS4e4q9oBaU&t=13294s)
+
+### Defer
+Door defer voor een statement te zetten zal de executie pas plaatsvinden op het einde van de functie.
+```go
+// volgt LIFO (Last In First Out) volgorde
+defer fmt.Println("third")
+defer fmt.Println("second")
+fmt.Println("first)    
+```
+Alternatief voor bv. een connectie te sluiten in een finally blok.\
+**Variabelen meegegeven in defered statement zijn een kopie van de waarden op het moment van waarop het statement is aangeroepen**
+
+### Error handling
+Fouten worden bij Go iets anders aangepakt dan in andere talen. Waar je termen zoals exception zou gebruiken. Er wordt steeds van uit gegaan dat een error normaal gedrag is binnen een applicatie. 
+
+#### Panic
+Wanneer er een onoverkomelijke fout gebeurt zal de runtime (of jijzelf moeten) paniekeren (panic). Dit gedrag komt vaag overeen met exception throwing in andere talen.\
+Wat je veel zal zien in Go is het volgende.
+```go
+val, err := someFunction()
+if err != nil {
+    // do something
+}
+```
+Je zal zelf moeten beslissen of de fout kritiek is voor de werking van jouw programma. Als dit het geval is, zal je moeten paniekeren wat de executie stopt. **Met de uitzondering van deferred statements. Deze zullen eerst uitgevoerd worden alvorens het programma stopt.**
+
+#### Recover
+Dit valt te vergelijken met het catchen van een exception in andere talen. Recover zal er voor zorgen dat de executie van de functie waar de fout voorkwam stopgezet wordt, maar de rest van het programma zal blijven lopen. **Je kan enkel recover binnen een deferred function. Dit is een direct gevolg van het gedrag beschreven op het einde van [panic](#panic).**
