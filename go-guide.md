@@ -145,5 +145,58 @@ Deze gids zal de chronologie van een [youtube Go tutorial](https://www.youtube.c
 ## Maps en structs
 [Hoofdstuk maps en structs](https://www.youtube.com/watch?v=YS4e4q9oBaU&t=8240s)
 
+### Maps
 - Te vergelijken dictionary in andere talen
 - Key-value pairs
+- ```go
+    foo := map[string]int{} // Literal syntax
+    bar := make(map[string]int)
+    ```
+- **Niet alle types zijn valid keys, bv. slices niet, maar arrays wel**
+- Geen volgorde van elementen
+
+### Structs
+- Te vergelijken met klasses in andere talen
+- ```go
+    type myStruct struct {
+        myInt int
+        myString string
+    }
+    ```
+- Gebruik makend van bovenstaande struct:
+    ```go
+    // Veldnamen mogen ook weggelaten worden
+    aStruct := myStruct{
+        myInt: 42,
+        myString: "foo", // laatste komma belangrijk
+    }
+    aStruct.myInt // 42
+    ```
+- Anonieme structs
+    ```go
+    aStruct := struct{myInt int}{42}
+    aStruct.myInt // 42
+    ```
+
+#### Compositie
+- Te vergelijken met overerving in andere talen
+- ```go
+    type person struct {
+        name string
+        age int
+    }
+
+    type student struct {
+        person // erft alle velden over van person
+        fieldOfStudy string
+    }
+
+    ruben := student{
+        person{
+            "Ruben",
+            21,
+        },
+        "ICT",
+    }
+    ruben.name // Ruben
+    ```
