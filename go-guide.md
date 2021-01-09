@@ -1,4 +1,4 @@
-# Go for beginnners
+# Go for beginners
 
 Deze gids zal de chronologie van een [youtube Go tutorial](https://www.youtube.com/watch?v=YS4e4q9oBaU) volgen. Er zal telkens een verwijzing zijn naar het overeenkomstige hoofdstuk in de video.
 
