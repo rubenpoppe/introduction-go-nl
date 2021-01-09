@@ -106,9 +106,7 @@ Deze gids zal de chronologie van een [youtube Go tutorial](https://www.youtube.c
     foo := [...]{"bar"}
     bar := foo
     ```
-    <span style="color: red; font-weight: bold;">
-    Geen referentie naar adres van foo, maar een volldige kopie
-    </span>
+    **Geen referentie naar adres van foo, maar een volldige kopie**
 
 ### Slices
 - Geen vaste lengte
@@ -135,9 +133,7 @@ Deze gids zal de chronologie van een [youtube Go tutorial](https://www.youtube.c
     foo = append(foo, bar...) // Alsof bar volledig wordt uitgeschreven
     ```
 - Slice nemen van array of andere slice\
-<span style="color: red; font-weight: bold;">
-Wel referentie naar array of slice
-</span>
+    **Wel referentie naar array of slice**
     ```go
     foo := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
     foo[:] // 1, 2, 3, 4, 5, 6, 7, 8, 9, 10; hele slice
