@@ -187,7 +187,7 @@ Deze gids zal de chronologie van een [youtube Go tutorial](https://www.youtube.c
     }
 
     type student struct {
-        person // erft alle velden over van person
+        person // Erft alle velden over van person
         fieldOfStudy string
     }
 
