@@ -260,3 +260,62 @@ switch foo.(type) {
         // do something
 }
 ```
+
+## Looping
+[Hoofdstuk looping](https://www.youtube.com/watch?v=YS4e4q9oBaU&t=12077s)
+
+- Delen weglaten mogelijk (en ergens anders uitvoeren, anders infinite loop)
+    - For loop kan hierdoor ook functioneren als while loop
+    - Verwachte for loop
+        ```go
+        for i := 0; i < 10; i++ {}
+        ```
+     - ```go
+        i := 0
+        for i < 10 {
+            i++
+        }
+        ```
+    - ```go
+        i := 0
+        for {
+            if i > 10 {
+                break // stopt loop
+            }
+            i++
+        }
+        ```
+- ```go
+    for i := 0; i < 10; i++ {
+        if i == 2{
+            continue // stopt huidige iteratie
+        }
+    }
+    ```
+- Vergelijkbaar met foreach in andere talen
+    ```go
+        foo := []{"bar", "baz"}
+        for key, val := range foo {
+            // do something
+        }
+    ```
+    (Als je de key niet nodig hebt, zal je `_` moeten gebruiken.)
+
+### Labels
+Omdat break volledige executie van loops stopt kan je niet breaken in een inner loop zonder ook de outer loop te stoppen. Je kan labels ook gebruiken samen met het continue keyword.
+
+- ```go
+    for i := 0: i < 10; i++ {
+        for j := 0: j < 10; j++ {
+            break // stopt executie beide loops
+        }
+    }
+    ```
+- ```go
+    for i := 0: i < 10; i++ {
+        InnerLoop:
+            for j := 0: j < 10; j++ {
+                break InnerLoop // stopt executie inner loop
+            }
+    }
+    ```
