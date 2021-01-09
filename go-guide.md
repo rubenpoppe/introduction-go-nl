@@ -85,5 +85,66 @@ Deze gids zal de chronologie van een [youtube Go tutorial](https://www.youtube.c
 ## Arrays en slices
 [Hoofdstuk arrays and slices](https://www.youtube.com/watch?v=YS4e4q9oBaU&t=6473s)
 
+### Arrays
+- Arrays hebben een vaste lengte
+- ```go
+    foo := [5]string // array met 5 elementen van het type string
+    ```
+- initializer syntax
+    ```go
+    foo := [2]string{"bar", "baz"}
+    ```
+    - ```go
+        foo := [...]string{"bar", "baz"} // Maakt array van aantal elementen binnen {}
+        ```
+- Elementen kunnen ook achteraf toegevoegd worden
+    ```go
+    foo[0] = "bar"
+    ```
+
+- ```go
+    foo := [...]{"bar"}
+    bar := foo
+    ```
+    <span style="color: red; font-weight: bold;">
+    Geen referentie naar adres van foo, maar een volldige kopie
+    </span>
+
+### Slices
+- Geen vaste lengte
+- Onderliggend een array
+    - Wanneer slice wordt uitgebreid -> kopie naar nieuwe array
+- ```go
+    foo := []string{}
+    bar := make([]string, length, capacity) // Verder meer
+    ```
+    - In make syntax lengte nodig, capaciteit optioneel (default naar lengte)
+- ```go
+    foo := make([]string, 2, 8)
+    ```
+    Zal onderliggend een array aanmaken van lengte 8, maar de slice heeft een lengte van 2. Wat dit betekent is dat de slice kan groeien tot 8 elementen tot er onderliggende een nieuwe (grotere) array gemaakt wordt waar de slice naar gekopiëerd zal worden.
+- Elementen toevoegen gebeurd door de append functie. Na de slice kan je zoveel     elementen toevoegen als je wil.
+    ```go
+    foo := []string{"bar"}
+    foo = append(foo, "baz", "qux")
+    ```
+- Spread slice, handig in bv. append
+    ```go
+    foo := []int{0, 1, 2}
+    bar := []int{3, 4, 5}
+    foo = append(foo, bar...) // Alsof bar volledig wordt uitgeschreven
+    ```
+- Slice nemen van array of andere slice\
+<span style="color: red; font-weight: bold;">
+Wel referentie naar array of slice
+</span>
+    ```go
+    foo := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+    foo[:] // 1, 2, 3, 4, 5, 6, 7, 8, 9, 10; hele slice
+    foo[8:] // 9, 10; van index 8 (incl.) tot met einde
+    foo[:3] // 1, 2, 3; van begin (incl.) tot index 3
+    foo[1:4] // 2, 3, 4
+    ```
+
 ## Maps en structs
 [Hoofdstuk maps en structs](https://www.youtube.com/watch?v=YS4e4q9oBaU&t=8240s)
