@@ -200,3 +200,63 @@ Deze gids zal de chronologie van een [youtube Go tutorial](https://www.youtube.c
     }
     ruben.name // Ruben
     ```
+
+## If en switch statements
+[Hoofdstuk if and switch statements](https://www.youtube.com/watch?v=YS4e4q9oBaU&t=10080s)
+
+### If statement
+- Comma ok syntax
+    - Map key exists
+        ```go
+        foo := map[string]int{"bar": 42}
+        if val, ok := foo["bar"]; ok {
+            // ok is true wanneer een element met key "bar" bestaat
+            fmt.Println(val)
+        }
+        ```
+### Switch statements
+- Geen break keyword nodig
+    - Hierdoor geen [fallthrough](https://en.wikipedia.org/wiki/Switch_statement#Fallthrough) default
+    - Met keyword fallthrough zal toch de volgende case uitgevoerd worden
+- Wanneer een tag gebruikt wordt mogen cases niet overlappen
+    ```go
+    // Won't execute
+    switch foo {
+        case foo < 10:
+            // do something
+        case foo < 100:
+                // do something
+        default:
+            // do something
+    }
+    ```
+- Er hoeft geen tag gebruikt te worden, dan mag er wel overlap zijn
+    ```go
+    switch {
+        case foo < 10:
+            // will fire
+        case foo < 100:
+            // won't fire
+    }
+    ```
+
+#### Multiple case switch
+```go
+// Don't code like this
+switch foo {
+    case 2, 4, 6, 8:
+        // is even
+    case 1, 3, 5, 7, 9:
+        // is uneven
+}
+```
+
+#### Typed switch
+```go
+switch foo.(type) {
+    case int:
+        // do something
+    case string:
+        // do something
+}
+```
