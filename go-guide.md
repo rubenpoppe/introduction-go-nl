@@ -376,3 +376,89 @@ In talen waar pointers aanwezig zijn zal je geen velden kunnen getten of setten 
 Pointer arithmatics zijn bewerkingen op de adressen van pointers. Zo kan je bv. in een array het volgende element te referencen door het aantal bytes dat 1 element inneemt op te tellen bij het huidige adres.
 
 Om Go zo simpel mogelijk te houden hebben de developers besloten op [pointer arithmatics](https://www.tutorialspoint.com/cprogramming/c_pointer_arithmetic.htm) niet te implementeren. Je kan er wel gebruik van maken als je de [unsafe package](https://golang.org/pkg/unsafe) gebruikt.
+
+## Functies
+[Hoofdstuk functions](https://www.youtube.com/watch?v=YS4e4q9oBaU&t=15690s)
+
+```go
+func foo(bar string, baz string) {}
+var bar func(baz string)    
+bar = {
+    // do something
+}
+```
+- Meegeven parameters in functies worden gekopiëerd.
+    ```go
+    foo := "bar"
+    func qux(s string) {
+        s = "baz"
+    }
+    qux(foo)
+    fmt.Println(foo) // bar
+
+    ```
+    - Data van variabelen aanpassen binnen de functie d.m.v. pointers.
+        ```go
+        foo := "bar"
+        func qux(s *string) {
+            *s = "baz"
+        }
+        qux(&foo)
+        fmt.Println(foo) // baz
+        ```
+- Return types worden na de parameterlijst geplaatst.
+    ```go
+    func foo(bar string) string {
+        return bar
+    }
+    ```
+    Zal automatisch bar return op `return` keyword.
+    ```go
+    func foo(bar string) (bar string) {
+        return
+    }
+    ```
+    - Meerdere return types mogelijk. Handig voor comma ok syntax (gezien bij [if statements](#if-statement)) of om een error terug te geven.
+        ```go
+        func divide(a, b float64) (float64, error) {
+            if (b == 0) {
+                return 0.0, fmt.Errorf("Can't divide by zero")
+            }
+            return a / b, nil
+        }
+        ```
+- Verkorte syntax wanneer reeks van parameters van hetzelfde type zijn.
+    ```go
+    func foo(bar, baz string) {}
+    ``` 
+- Meerdere variabelen opgeven.\
+    **Kan enkel op het einde van de parameterlijst.**
+    ```go
+    func sum(values ...int) int {
+        sum := 0
+        for _, v := range values {
+            sum += v
+        }
+    }
+    sum(1, 2, 3, 4) // 10
+    ```
+
+### Anonieme functies
+```go
+func() {
+    fmt.Println("Hello world!")
+}()
+// onmiddelijk uitgevoerd
+```
+
+### Methodes
+```go
+type person struct{
+    name string
+}
+func (p person) introduce() {
+    fmt.Println("Hi, my name is", p.name)
+}
+ruben := person{"Ruben"}
+ruben.introduce() // Hi, my name is Ruben
+```
