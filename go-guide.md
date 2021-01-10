@@ -540,3 +540,92 @@ var m = sync.RWMutex{}
 m.Lock() // enkel schrijven locked
 m.RLock() // lezen en schrijven locked
 ```
+
+## Channels
+[Hoofdstuk channels](https://www.youtube.com/watch?v=YS4e4q9oBaU&t=21910s)
+
+Channels maken het mogelijk om data **van hetzelfde type** van de ene goroutine naar de andere te sturen. Channels kunnen zowel versturen als ontvangen.
+```go
+var wg = sync.WaitGroup{} 
+ch := make(chan string) // kan elk type zijn
+wg.Add(2)
+go func(){
+    str <- ch // data uit channel krijgen
+    fmt.Println(str) // foo
+    wg.Done()
+}()
+go func(){
+    "foo" -> ch // data naar channel sturen
+    wg.Done()
+}()
+wg.Wait()
+```
+
+Je kan expliciet configureren dat in bepaalde goroutines enkel data ontvangen óf verstuurd mag worden.
+```go
+var wg = sync.WaitGroup{} 
+ch := make(chan string)
+wg.Add(2)
+// goroutine dat enkel mag ontvangen
+go func(ch <- chan string){ 
+    str <- ch
+    fmt.Println(str)
+    wg.Done()
+}(ch)
+// goroutine dat enkel mag versturen
+go func(ch chan <- string){
+    "foo" -> ch
+    wg.Done()
+}(ch)
+wg.Wait()
+```
+
+### Buffered channels
+```go
+var wg = sync.WaitGroup{} 
+ch := make(chan string, 10) // maakt channel met buffer van 10
+wg.Add(2)
+go func(ch <- chan string){ 
+    // itereren over alles values in de channel
+    for str := range ch {        
+        fmt.Println(str) // 1st iter: foo, 2nd iter: bar
+    }
+    wg.Done()
+}(ch)
+go func(ch chan <- string){
+    "foo" -> ch
+    "bar" -> ch
+    close(ch) // channel wordt DEFINITIEF gesloten zodat range weet waar te stopppen
+    wg.Done()
+}(ch)
+wg.Wait()
+```
+**Comma ok syntax werkt ook bij channels. True wanneer channel open, false wanneer gesloten.**
+```go
+if val, ok := <- ch; ok {}
+```
+
+### Signal only channels
+Signal only channels versturen geen data, enkel of er een bericht verstuurd is. Het type van de channel wordt een lege struct omdat dit geen geheugen inneemt.
+
+Possible use case: gracefully close goroutine
+```go
+valCh := make(chan string)
+doneCh := make(chan struct{})
+
+func doSomething() {
+    for {
+        select {
+            case val := <- valCh:
+                // do something
+            case <- doneCh:
+                break
+        }
+    }
+}
+
+go doSomething()
+valCh <- "foo"
+valCh <- "bar"
+doneCh <- struct{}{}
+```
