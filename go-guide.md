@@ -287,7 +287,7 @@ switch foo.(type) {
         ```
 - ```go
     for i := 0; i < 10; i++ {
-        if i == 2{
+        if i == 2 {
             continue // stopt huidige iteratie
         }
     }
@@ -516,7 +516,7 @@ Een waitgroup object heeft 3 methodes:
 var wg = sync.WaitGroup{}
 
 wg.Add(1)
-go func(){
+go func() {
     // do something
     wg.Done()
 }
@@ -549,12 +549,12 @@ Channels maken het mogelijk om data **van hetzelfde type** van de ene goroutine 
 var wg = sync.WaitGroup{} 
 ch := make(chan string) // kan elk type zijn
 wg.Add(2)
-go func(){
+go func() {
     str <- ch // data uit channel krijgen
     fmt.Println(str) // foo
     wg.Done()
 }()
-go func(){
+go func() {
     "foo" -> ch // data naar channel sturen
     wg.Done()
 }()
@@ -567,13 +567,13 @@ var wg = sync.WaitGroup{}
 ch := make(chan string)
 wg.Add(2)
 // goroutine dat enkel mag ontvangen
-go func(ch <- chan string){ 
+go func(ch <-chan string) { 
     str <- ch
     fmt.Println(str)
     wg.Done()
 }(ch)
 // goroutine dat enkel mag versturen
-go func(ch chan <- string){
+go func(ch chan<- string) {
     "foo" -> ch
     wg.Done()
 }(ch)
@@ -585,14 +585,14 @@ wg.Wait()
 var wg = sync.WaitGroup{} 
 ch := make(chan string, 10) // maakt channel met buffer van 10
 wg.Add(2)
-go func(ch <- chan string){ 
+go func(ch <-chan string) { 
     // itereren over alles values in de channel
     for str := range ch {        
         fmt.Println(str) // 1st iter: foo, 2nd iter: bar
     }
     wg.Done()
 }(ch)
-go func(ch chan <- string){
+go func(ch chan<- string) {
     "foo" -> ch
     "bar" -> ch
     close(ch) // channel wordt DEFINITIEF gesloten zodat range weet waar te stopppen
@@ -602,7 +602,7 @@ wg.Wait()
 ```
 **Comma ok syntax werkt ook bij channels. True wanneer channel open, false wanneer gesloten.**
 ```go
-if val, ok := <- ch; ok {}
+if val, ok := <-ch; ok {}
 ```
 
 ### Signal only channels
@@ -610,15 +610,15 @@ Signal only channels versturen geen data, enkel of er een bericht verstuurd is. 
 
 Possible use case: gracefully close goroutine
 ```go
-valCh := make(chan string)
-doneCh := make(chan struct{})
+var valCh = make(chan string)
+var doneCh = make(chan struct{})
 
 func doSomething() {
     for {
         select {
-            case val := <- valCh:
+            case val := <-valCh:
                 // do something
-            case <- doneCh:
+            case <-doneCh:
                 break
         }
     }
