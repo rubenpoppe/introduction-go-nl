@@ -121,7 +121,7 @@ Deze gids zal de chronologie van een [youtube Go tutorial](https://www.youtube.c
     foo := make([]string, 2, 8)
     ```
     Zal onderliggend een array aanmaken van lengte 8, maar de slice heeft een lengte van 2. Wat dit betekent is dat de slice kan groeien tot 8 elementen tot er onderliggende een nieuwe (grotere) array gemaakt wordt waar de slice naar gekopiëerd zal worden.
-- Elementen toevoegen gebeurd door de append functie. Na de slice kan je zoveel     elementen toevoegen als je wil.
+- Elementen toevoegen gebeurt door de append functie. Na de slice kan je zoveel elementen toevoegen als je wil.
     ```go
     foo := []string{"bar"}
     foo = append(foo, "baz", "qux")
@@ -490,3 +490,53 @@ ruben.introduce() // Hi, my name is Ruben
 - **Als je een interface gebruikt waar een pointer gebruikt wordt in een methode, zal je altijd een pointer moeten meegeven. Gebruik je enkel value type, heb je de keuze.**\
 Bekijk hierrond zeker [dit stuk van de video](https://youtu.be/YS4e4q9oBaU?t=19205).
 - **Indien je aan de velden van een struct moet kunnen binnen een functie, gebruik dan geen interfaces.**
+
+## Goroutines
+[Hoofdstuk goroutines](https://www.youtube.com/watch?v=YS4e4q9oBaU&t=20037s)
+
+Door `go` voor een statement te zetten zal deze uitgevoerd worden in een goroutine. Een goroutine is een [green thread](https://en.wikipedia.org/wiki/Green_threads). Wat dit in grote lijnen betekent is dat i.p.v. een OS thread een mindere resource intensive virtual thread opstart. 
+
+### Waitgroups
+Go gebruikt waitgroups om de executie van goroutines af te wachten. Indien dit niet gebeurt, kan het gebeuren dat de applicatie afsluit alvorens de goroutine is beëindigd.
+
+Een waitgroup object heeft 3 methodes:
+- Toevoegen van `delta` goroutines in de wachtrij.
+    ```go
+    Add(delta int)
+    ```
+- Markeren dat de wachtrij met decrementeren met 1.
+    ```go
+    Done()
+    ```
+- Wachten op alles in de wachtrij.
+    ```go
+    Wait()
+    ```
+```go
+var wg = sync.WaitGroup{}
+
+wg.Add(1)
+go func(){
+    // do something
+    wg.Done()
+}
+wg.Wait()
+```
+
+### Mutex
+Mutex staat voor MUTual EXclusion lock. Door een mutex te locken zorg je er voor dat deze onbeschikbaar wordt voor andere goroutines. Deze zullen moeten wachten tot de mutex terug unlocked is.
+
+Het is best dat de locks uitgevoerd worden buiten de goroutines. Indien dit niet het geval is, zullen sommige goroutines geen effect op de data hebben.\
+[Voorbeeld in de Go playground](https://play.golang.com/p/UpucL_gqe01).
+
+#### Mutex
+Gebruikt als veld in een struct. Wanneer de mutex gelockt wordt, zal enkel de goroutine waar de lock gebeurd is aan het object kunnen.
+
+#### RWMutex
+Bij een `RWMutex` heb je de keuze om enkel het schrijven te locken of ook het lezen. Als je enkel het schrijven locked, kunnen ander goroutines wel nog lezen.
+
+```go
+var m = sync.RWMutex{}
+m.Lock() // enkel schrijven locked
+m.RLock() // lezen en schrijven locked
+```
