@@ -453,7 +453,7 @@ func() {
 
 ### Methodes
 ```go
-type person struct{
+type person struct {
     name string
 }
 func (p person) introduce() {
@@ -462,3 +462,31 @@ func (p person) introduce() {
 ruben := person{"Ruben"}
 ruben.introduce() // Hi, my name is Ruben
 ```
+
+## Interfaces
+[Hoofdstuk interfaces](https://www.youtube.com/watch?v=YS4e4q9oBaU&t=17879s)
+
+- Naming convention: single method interfaces hebben naam van functie + er. Bv.: interface met methode Writer noemt Writer.
+- Interface kunnen ook bestaan uit andere interface op dezelfde manier als [compositie](#compositie).
+- Interface proberen converten naar andere interfaces.\
+**Werkt enkel wanneer de methodes in de interface zitten.**
+    ```go
+    type writer interface {
+        write([]byte) (int, error)
+    }
+    type myWriter struct {}
+
+    type reader interface {
+        read([]byte) (int, error)
+    }
+    type myReader struct {}
+
+    var aWriter writer = myWriter{}
+    aReader := aWriter.(reader)
+    ```
+    De `writer` interface zal niet geconverteerd kunnen worden naar de `reader` interface omdat deze geen read methode bevat.\
+    De comma ok syntax kan hier ook gebruikt worden zodat er geen panic ontstaat.
+- Objecten kunnen in een lege interface (`interface{}`) gestopt worden. Dit werkt zoals var in Java en C#. Je zal daarna wel moeten checken wat voor type dit object is alvorens je er methode kan op toepassen.
+- **Als je een interface gebruikt waar een pointer gebruikt wordt in een methode, zal je altijd een pointer moeten meegeven. Gebruik je enkel value type, heb je de keuze.**\
+Bekijk hierrond zeker [dit stuk van de video](https://youtu.be/YS4e4q9oBaU?t=19205).
+- **Indien je aan de velden van een struct moet kunnen binnen een functie, gebruik dan geen interfaces.**
