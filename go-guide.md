@@ -106,7 +106,7 @@ Deze gids zal de chronologie van een [youtube Go tutorial](https://www.youtube.c
     foo := [...]{"bar"}
     bar := foo
     ```
-    **Geen referentie naar adres van foo, maar een volldige kopie**
+    **Geen referentie naar adres van foo, maar een volledige kopie**
 
 ### Slices
 - Geen vaste lengte
@@ -350,3 +350,29 @@ Je zal zelf moeten beslissen of de fout kritiek is voor de werking van jouw prog
 
 #### Recover
 Dit valt te vergelijken met het catchen van een exception in andere talen. Recover zal er voor zorgen dat de executie van de functie waar de fout voorkwam stopgezet wordt, maar de rest van het programma zal blijven lopen. **Je kan enkel recover binnen een deferred function. Dit is een direct gevolg van het gedrag beschreven op het einde van [panic](#panic).**
+
+## Pointers
+[Hoofdstuk pointers](https://www.youtube.com/watch?v=YS4e4q9oBaU&t=14637s)
+
+Een pointer is een verwijzing naar het adres waar de informatie van een object wordt opgeslaan.\
+Zoals al eerder vermeld in [het hoofstuk over arrays](#arrays), zal er een volledige kopie worden gemaakt bij het declareren van `bar := foo`. Dit is niet enkel zo bij arrays, maar bij de meeste types in Go.
+
+Dit gedrag kan je aanpassen door gebruik te maken van pointers.
+```go
+var foo string = "bar"
+var baz *string = &foo
+```
+`*string` is een pointer van het type string. Aangezien pointers enkel het adres bewaren, wordt er met `&foo` verwezen naar het adres van `foo`.\
+**Opgelet: bij het uitprinten van `baz` zal je het adres terugkrijgen.**\
+Om de data opgeslaan op dat adres te verkrijgen, zal je de pointer moeten derefencen.
+```go
+fmt.Println(*baz) // "bar"
+```
+
+### Pointers naar structs
+In talen waar pointers aanwezig zijn zal je geen velden kunnen getten of setten op de pointer, maar zal je eerst moeten dereferencen. In Go kan je dit ook doen, maar de compiler zal dit automatisch voor jou doen.
+
+### Pointer arithmatics
+Pointer arithmatics zijn bewerkingen op de adressen van pointers. Zo kan je bv. in een array het volgende element te referencen door het aantal bytes dat 1 element inneemt op te tellen bij het huidige adres.
+
+Om Go zo simpel mogelijk te houden hebben de developers besloten op [pointer arithmatics](https://www.tutorialspoint.com/cprogramming/c_pointer_arithmetic.htm) niet te implementeren. Je kan er wel gebruik van maken als je de [unsafe package](https://golang.org/pkg/unsafe) gebruikt.
