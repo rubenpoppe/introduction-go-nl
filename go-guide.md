@@ -6,6 +6,21 @@ Deze gids zal de chronologie van een [youtube Go tutorial](https://www.youtube.c
 
 [Go Spec](https://golang.org/ref/spec) is ook (zeer) leesbaar tegenover sommige andere specificaties. Hier zal je wel al moeten weten onder welke categorie je zoekt.
 
+## Inhoud
+1. [Variabelen](#variabelen)
+2. [Primitieve types en bewerkingen](#primitieve-types-en-bewerkingen)
+3. [Constanten](#constanten)
+4. [Arrays en slices](#arrays-en-slices)
+5. [Maps en structs](#maps-en-structs)
+6. [If en switch statements](#if-en-switch-statements)
+7. [Looping](#looping)
+8. [Control flow](#control-flow)
+9. [Pointers](#pointers)
+10. [Functies](#functies)
+11. [Interfaces](#interfaces)
+12. [Goroutines](#goroutines)
+13. [Channels](#channels)
+
 ## Variabelen
 [Hoofdstuk variables](https://www.youtube.com/watch?v=YS4e4q9oBaU&t=2148s)
 
