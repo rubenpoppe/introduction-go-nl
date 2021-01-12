@@ -1,5 +1,6 @@
 # Go for beginners
 
+## Introductie
 Deze gids zal de chronologie van een [youtube Go tutorial](https://www.youtube.com/watch?v=YS4e4q9oBaU) volgen. Er zal telkens een verwijzing zijn naar het overeenkomstige hoofdstuk in de video.
 
  Daarnaast kan je ook eens [A Tour of Go](https://tour.golang.org/welcome/1) doorlopen. Daar wordt stap voor stap een deel uitgelegd met voorbeelden.
@@ -32,7 +33,7 @@ Deze gids zal de chronologie van een [youtube Go tutorial](https://www.youtube.c
     - Ongebruikte variabelen kunnen worden weggeschreven naar `_`
 - Camelcasing
 - Afkortingen altijd caps (bv.: HTTPRequest)
-- Variabelen exporten gebeurt door te starten met hoofdletter
+- Variabelen exporteren gebeurt door te starten met hoofdletter
 - Variabelen zijn scoped, d.w.z. dat de 'binnenste' variabele 'wint' van de buitenste
     - ```go
         var foo string = "bar"
@@ -105,7 +106,7 @@ Deze gids zal de chronologie van een [youtube Go tutorial](https://www.youtube.c
 - ```go
     foo := [5]string // array met 5 elementen van het type string
     ```
-- initializer syntax
+- Initializer syntax
     ```go
     foo := [2]string{"bar", "baz"}
     ```
@@ -135,7 +136,7 @@ Deze gids zal de chronologie van een [youtube Go tutorial](https://www.youtube.c
 - ```go
     foo := make([]string, 2, 8)
     ```
-    Zal onderliggend een array aanmaken van lengte 8, maar de slice heeft een lengte van 2. Wat dit betekent is dat de slice kan groeien tot 8 elementen tot er onderliggende een nieuwe (grotere) array gemaakt wordt waar de slice naar gekopiëerd zal worden.
+    Zal onderliggend een array aanmaken van lengte 8, maar de slice heeft een lengte van 2. Wat dit betekent is dat de slice kan groeien tot 8 elementen tot er onderliggend een nieuwe (grotere) array gemaakt wordt waar de slice naar gekopiëerd zal worden.
 - Elementen toevoegen gebeurt door de append functie. Na de slice kan je zoveel elementen toevoegen als je wil.
     ```go
     foo := []string{"bar"}
@@ -245,7 +246,7 @@ Deze gids zal de chronologie van een [youtube Go tutorial](https://www.youtube.c
             // do something
     }
     ```
-- Er hoeft geen tag gebruikt te worden, dan mag er wel overlap zijn
+- Er hoeft geen tag gebruikt te worden. Als dat het geval is mag er wel overlap zijn.
     ```go
     switch {
         case foo < 10:
@@ -346,30 +347,30 @@ defer fmt.Println("third")
 defer fmt.Println("second")
 fmt.Println("first)    
 ```
-Alternatief voor bv. een connectie te sluiten in een finally blok.\
-**Variabelen meegegeven in defered statement zijn een kopie van de waarden op het moment van waarop het statement is aangeroepen**
+Alternatief om bv. een connectie te sluiten in een finally blok.\
+**Variabelen meegegeven in defered statement zijn een kopie van de waarden op het moment van waarop het statement is aangeroepen.**
 
 ### Error handling
-Fouten worden bij Go iets anders aangepakt dan in andere talen. Waar je termen zoals exception zou gebruiken. Er wordt steeds van uit gegaan dat een error normaal gedrag is binnen een applicatie. 
+Fouten worden bij Go iets anders aangepakt dan in andere talen, waar je termen zoals exception zou gebruiken. Er wordt steeds van uit gegaan dat een error normaal gedrag is binnen een applicatie. 
 
 #### Panic
 Wanneer er een onoverkomelijke fout gebeurt zal de runtime (of jijzelf moeten) paniekeren (panic). Dit gedrag komt vaag overeen met exception throwing in andere talen.\
-Wat je veel zal zien in Go is het volgende.
+Wat je veel zal zien in Go is het volgende:
 ```go
 val, err := someFunction()
 if err != nil {
     // do something
 }
 ```
-Je zal zelf moeten beslissen of de fout kritiek is voor de werking van jouw programma. Als dit het geval is, zal je moeten paniekeren wat de executie stopt. **Met de uitzondering van deferred statements. Deze zullen eerst uitgevoerd worden alvorens het programma stopt.**
+Je zal zelf moeten beslissen of de fout kritiek is voor de werking van jouw programma. Als dit het geval is, zal je moeten paniekeren wat de executie stopt. **Met uitzondering van deferred statements. Deze zullen eerst uitgevoerd worden alvorens het programma stopt.**
 
 #### Recover
-Dit valt te vergelijken met het catchen van een exception in andere talen. Recover zal er voor zorgen dat de executie van de functie waar de fout voorkwam stopgezet wordt, maar de rest van het programma zal blijven lopen. **Je kan enkel recover binnen een deferred function. Dit is een direct gevolg van het gedrag beschreven op het einde van [panic](#panic).**
+Dit valt te vergelijken met het catchen van een exception in andere talen. Recover zal er voor zorgen dat de executie van de functie waar de fout voorkwam stopgezet wordt, maar de rest van het programma zal blijven lopen. **Je kan enkel recoveren binnen een deferred function. Dit is een direct gevolg van het gedrag beschreven op het einde van [panic](#panic).**
 
 ## Pointers
 [Hoofdstuk pointers](https://www.youtube.com/watch?v=YS4e4q9oBaU&t=14637s)
 
-Een pointer is een verwijzing naar het adres waar de informatie van een object wordt opgeslaan.\
+Een pointer is een verwijzing naar het adres waar de informatie van een object wordt opgeslagen.\
 Zoals al eerder vermeld in [het hoofstuk over arrays](#arrays), zal er een volledige kopie worden gemaakt bij het declareren van `bar := foo`. Dit is niet enkel zo bij arrays, maar bij de meeste types in Go.
 
 Dit gedrag kan je aanpassen door gebruik te maken van pointers.
@@ -379,7 +380,7 @@ var baz *string = &foo
 ```
 `*string` is een pointer van het type string. Aangezien pointers enkel het adres bewaren, wordt er met `&foo` verwezen naar het adres van `foo`.\
 **Opgelet: bij het uitprinten van `baz` zal je het adres terugkrijgen.**\
-Om de data opgeslaan op dat adres te verkrijgen, zal je de pointer moeten derefencen.
+Om de data opgeslagen op dat adres te verkrijgen, zal je de pointer moeten derefencen.
 ```go
 fmt.Println(*baz) // "bar"
 ```
@@ -388,7 +389,7 @@ fmt.Println(*baz) // "bar"
 In talen waar pointers aanwezig zijn zal je geen velden kunnen getten of setten op de pointer, maar zal je eerst moeten dereferencen. In Go kan je dit ook doen, maar de compiler zal dit automatisch voor jou doen.
 
 ### Pointer arithmatics
-Pointer arithmatics zijn bewerkingen op de adressen van pointers. Zo kan je bv. in een array het volgende element te referencen door het aantal bytes dat 1 element inneemt op te tellen bij het huidige adres.
+Pointer arithmatics zijn bewerkingen op de adressen van pointers. Zo kan je bv. in een array het volgende element referencen door het aantal bytes dat 1 element inneemt op te tellen bij het huidige adres.
 
 Om Go zo simpel mogelijk te houden hebben de developers besloten op [pointer arithmatics](https://www.tutorialspoint.com/cprogramming/c_pointer_arithmetic.htm) niet te implementeren. Je kan er wel gebruik van maken als je de [unsafe package](https://golang.org/pkg/unsafe) gebruikt.
 
@@ -427,7 +428,7 @@ bar = {
         return bar
     }
     ```
-    Zal automatisch bar return op `return` keyword.
+    Zal automatisch bar returnen op `return` keyword.
     ```go
     func foo(bar string) (bar string) {
         return
